@@ -2,7 +2,7 @@ const con = require("../connection")
 const messages = require("../messages")
 
 async function getProjectsUsers(req, res) {
-    const query = "select project_id, users_id from project_users;"
+    const query = "select project_id, user_id from project_users;"
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -13,7 +13,7 @@ async function getProjectsUsers(req, res) {
 
 async function addProjectUser(req, res) {
     const { project_id, users_id } = req.body
-    const query = `insert into projects_users (project_id, users_id) values ("${project_id}", "${users_id}")`
+    const query = `insert into project_users (project_id, user_id) values ("${project_id}", "${users_id}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
