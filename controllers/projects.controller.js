@@ -12,8 +12,8 @@ async function getProjects(req, res) {
 }
 
 async function addProject(req, res) {
-    const { title, description, state, timestamps, manager_id} = req.body
-    const query = `insert into projects (title, description, state, timestamps, manager_id) values ("${title}", "${description}", "${state}", "${timestamps}", "${manager_id}",)`
+    const { title, description, state, timestamps, manager_id } = req.body
+    const query = `insert into projects (title, description, state, timestamps, manager_id) values ("${title}", "${description}", "${state}", "${timestamps}", "${manager_id}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -35,24 +35,24 @@ async function deleteProject(req, res) {
 
 async function editProject(req, res) {
     const { id } = req.params
-    const {title, description, state, timestamps, manager_id} = req.body
+    const { title, description, state, timestamps, manager_id } = req.body
     let set = []
     if (title) {
-        set.push(`title = "${title}"`) 
+        set.push(`title = "${title}"`)
     }
     if (description) {
-        set.push(`description = "${description}"`) 
+        set.push(`description = "${description}"`)
     }
     if (state) {
-        set.push(`state = "${state}"`) 
+        set.push(`state = "${state}"`)
     }
     if (timestamps) {
-        set.push(`timestamps = "${timestamps}"`) 
+        set.push(`timestamps = "${timestamps}"`)
     }
     if (manager_id) {
-        set.push(`manager_id = "${manager_id}"`) 
+        set.push(`manager_id = "${manager_id}"`)
     }
-    
+
     const query = `update projects set ${set.join()} where id_project = ${id}`
     con.query(query, (err, results, fields) => {
         if (err) {
@@ -63,4 +63,4 @@ async function editProject(req, res) {
 }
 
 
-module.exports = { getProjects, addProject, deleteProject, editProject}
+module.exports = { getProjects, addProject, deleteProject, editProject }
