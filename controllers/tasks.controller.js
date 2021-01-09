@@ -13,7 +13,7 @@ async function getTasks(req, res) {
 
 async function addTask(req, res) {
     const { title, description, state, end_date, timestamps, type, project_id } = req.body
-    const query = `insert into tasks (title, description, state, end_date, timestamps, type, project_id) values ("${title}", "${description}", "${state}, "${end_date}", "${timestamps}", "${type}", "${project_id}")`
+    const query = `insert into tasks (title, description, state, end_date, timestamps, type, project_id) values ("${title}", "${description}", "${state}", "${end_date}", "${timestamps}", "${type}", "${project_id}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))

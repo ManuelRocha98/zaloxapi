@@ -34,7 +34,7 @@ module.exports = (req, res, next) => {
             return res.status(messages.token.invalid.status).send(messages.token.invalid)
         }
 
-        const query = `select * from user where id_user = "${decoded.id}"`
+        const query = `select * from users where id_user = "${decoded.id}"`
         con.query(query, (err, results, fields) => {
             if (err) {
                 console.log(err)

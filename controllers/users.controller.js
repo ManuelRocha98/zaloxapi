@@ -1,8 +1,9 @@
 const con = require("../connection")
 const messages = require("../messages")
 
+
 async function getUsers(req, res) {
-    const query = "select * from users;"
+    const query = "select id_user, username, role_id from users;"
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))

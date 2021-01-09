@@ -14,5 +14,31 @@ module.exports = {
             status: 200,
             sucess: true
         }
+    },
+    token: {
+        missing: {
+            name: "missingToken",
+            message: {
+                pt: "Token necessário."
+            },
+            status: 401,
+            success: false
+        },
+        malformated: {
+            name: "malformatedToken",
+            message: {
+                pt: "Token desformatado."
+            },
+            status: 401,
+            success: false
+        },
+        invalid: {
+            name: "invalidToken",
+            message: {
+                pt: "Token inválido."
+            },
+            status: 401,
+            success: false
+        }
     }
 }
