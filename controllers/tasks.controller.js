@@ -2,7 +2,7 @@ const con = require("../connection")
 const messages = require("../messages")
 
 async function getTasks(req, res) {
-    const query = "select id_task, title, description, state, timestamps, end_date, type, project_id from tasks;"
+    const query = "select * from tasks;"
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -12,8 +12,8 @@ async function getTasks(req, res) {
 }
 
 async function addTask(req, res) {
-    const { id_task, title, description, state, timestamps, end_date, type, project_id} = req.body
-    const query = `insert into tasks (id_task, title, description, state, timestamps, end_date, type, project_id) values ("${id_task}", "${title}, ${description}", "${state}, ${timestamps}", "${end_date}", ${type}", "${project_id}")`
+    const { title, description, state, end_date, timestamps, type, project_id } = req.body
+    const query = `insert into tasks (title, description, state, end_date, timestamps, type, project_id) values ("${title}", "${description}", "${state}, "${end_date}", "${timestamps}", "${type}", "${project_id}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -35,33 +35,33 @@ async function deleteTask(req, res) {
 
 async function editTask(req, res) {
     const { id } = req.params
-    const {  id_task, title, description, state, timestamps, end_date, type, project_id} = req.body
+    const { id_task, title, description, state, end_date, timestamps, type, project_id } = req.body
     let set = []
     if (id_task) {
-        set.push(`id_task = "${id_task}"`) 
+        set.push(`id_task = "${id_task}"`)
     }
     if (title) {
-        set.push(`title = "${title}"`) 
+        set.push(`title = "${title}"`)
     }
     if (description) {
-        set.push(`description = "${description}"`) 
+        set.push(`description = "${description}"`)
     }
     if (state) {
-        set.push(`state = "${state}"`) 
+        set.push(`state = "${state}"`)
     }
     if (timestamps) {
-        set.push(`timestamps = "${timestamps}"`) 
+        set.push(`timestamps = "${timestamps}"`)
     }
     if (end_date) {
-        set.push(`end_date = "${end_date}"`) 
+        set.push(`end_date = "${end_date}"`)
     }
     if (type) {
-        set.push(`type = "${type}"`) 
+        set.push(`type = "${type}"`)
     }
     if (project_id) {
-        set.push(`project_id = "${project_id}"`) 
+        set.push(`project_id = "${project_id}"`)
     }
-    
+
     const query = `update tasks set ${set.join()} where id_tasks = ${id}`
     con.query(query, (err, results, fields) => {
         if (err) {
@@ -72,4 +72,4 @@ async function editTask(req, res) {
 }
 
 
-module.exports = { getTasks, addTask, deleteTask, editTask}
+module.exports = { getTasks, addTask, deleteTask, editTask }
