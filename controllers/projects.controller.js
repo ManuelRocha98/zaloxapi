@@ -1,8 +1,9 @@
 const con = require("../connection")
 const messages = require("../messages")
+const moment = require("moment")
 
 async function getProjects(req, res) {
-    const query = "select id_project, title, description, state, timestamps, manager_id from projects;"
+    const query = "select id_project, title, description, timestamps, manager_id from projects;"
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -12,8 +13,8 @@ async function getProjects(req, res) {
 }
 
 async function addProject(req, res) {
-    const { title, description, state, timestamps, manager_id } = req.body
-    const query = `insert into projects (title, description, state, timestamps, manager_id) values ("${title}", "${description}", "${state}", "${timestamps}", "${manager_id}")`
+    const { title, description, timestamps, manager_id } = req.body
+    const query = `insert into projects (title, description, timestamps, manager_id) values ("${title}", "${description}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}", "${manager_id}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -42,9 +43,6 @@ async function editProject(req, res) {
     }
     if (description) {
         set.push(`description = "${description}"`)
-    }
-    if (state) {
-        set.push(`state = "${state}"`)
     }
     if (timestamps) {
         set.push(`timestamps = "${timestamps}"`)

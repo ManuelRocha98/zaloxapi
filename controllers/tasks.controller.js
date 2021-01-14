@@ -1,5 +1,6 @@
 const con = require("../connection")
 const messages = require("../messages")
+const moment = require("moment")
 
 async function getTasks(req, res) {
     const query = "select * from tasks;"
@@ -12,8 +13,9 @@ async function getTasks(req, res) {
 }
 
 async function addTask(req, res) {
-    const { title, description, state, end_date, timestamps, type, project_id } = req.body
-    const query = `insert into tasks (title, description, state, end_date, timestamps, type, project_id) values ("${title}", "${description}", "${state}", "${end_date}", "${timestamps}", "${type}", "${project_id}")`
+    const { title, description, state, project_id } = req.body
+    const query = `insert into tasks (title, description, state, end_date, timestamps, project_id) values ("${title}", "${description}", "${state}", "${moment().format('YYYY-MM-DD')}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}", "${project_id}")`
+    console.log(query)
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -35,7 +37,7 @@ async function deleteTask(req, res) {
 
 async function editTask(req, res) {
     const { id } = req.params
-    const { id_task, title, description, state, end_date, timestamps, type, project_id } = req.body
+    const { id_task, title, description, state, end_date, timestamps, project_id } = req.body
     let set = []
     if (id_task) {
         set.push(`id_task = "${id_task}"`)
@@ -54,9 +56,6 @@ async function editTask(req, res) {
     }
     if (end_date) {
         set.push(`end_date = "${end_date}"`)
-    }
-    if (type) {
-        set.push(`type = "${type}"`)
     }
     if (project_id) {
         set.push(`project_id = "${project_id}"`)

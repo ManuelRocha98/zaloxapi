@@ -12,8 +12,8 @@ async function getMessages(req, res) {
 }
 
 async function addMessage(req, res) {
-    const { content, user_id, task_id, timestamps} = req.body
-    const query = `insert into messages (content, user_id, task_id, timestamps) values ("${content}", "${user_id}", "${task_id}", "${timestamps}")`
+    const { content, user_id, task_id } = req.body
+    const query = `insert into messages (content, user_id, task_id, timestamps) values ("${content}", "${user_id}", "${task_id}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -35,21 +35,21 @@ async function deleteMessage(req, res) {
 
 async function editMessage(req, res) {
     const { id } = req.params
-    const {content, user_id, task_id, timestamps} = req.body
+    const { content, user_id, task_id, timestamps } = req.body
     let set = []
     if (content) {
-        set.push(`content = "${content}"`) 
+        set.push(`content = "${content}"`)
     }
     if (user_id) {
-        set.push(`user_id = "${user_id}"`) 
+        set.push(`user_id = "${user_id}"`)
     }
     if (task_id) {
-        set.push(`task_id = "${task_id}"`) 
+        set.push(`task_id = "${task_id}"`)
     }
     if (timestamps) {
-        set.push(`timestamps = "${timestamps}"`) 
+        set.push(`timestamps = "${timestamps}"`)
     }
-    
+
     const query = `update messages set ${set.join()} where id_message = ${id}`
     con.query(query, (err, results, fields) => {
         if (err) {
@@ -60,4 +60,4 @@ async function editMessage(req, res) {
 }
 
 
-module.exports = { getMessages, addMessage, deleteMessage, editMessage}
+module.exports = { getMessages, addMessage, deleteMessage, editMessage }
