@@ -61,7 +61,7 @@ async function editTask(req, res) {
         set.push(`project_id = "${project_id}"`)
     }
 
-    const query = `update tasks set ${set.join()} where id_tasks = ${id}`
+    const query = `update tasks set ${set.join()} where id_task = ${id}`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
