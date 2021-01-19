@@ -1,5 +1,6 @@
 const con = require("../connection")
 const messages = require("../messages")
+const bcrypt = require("bcryptjs")
 
 
 async function getUsers(req, res) {
@@ -13,7 +14,12 @@ async function getUsers(req, res) {
 }
 
 async function addUser(req, res) {
-    const { username, password, roleId} = req.body
+    let { username, password, roleId } = req.body
+
+    const salt = 10
+    const hash = await bcrypt.hash(password, salt)
+    password = hash
+
     const query = `insert into users (username, password, role_id) values ("${username}", "${password}", "${roleId}")`
     con.query(query, (err, results, fields) => {
         if (err) {
@@ -36,18 +42,18 @@ async function deleteUser(req, res) {
 
 async function editUser(req, res) {
     const { id } = req.params
-    const { username, password, roleId} = req.body
+    const { username, password, roleId } = req.body
     let set = []
     if (username) {
-        set.push(`username = "${username}"`) 
+        set.push(`username = "${username}"`)
     }
     if (password) {
-        set.push(`password = "${password}"`) 
+        set.push(`password = "${password}"`)
     }
     if (roleId) {
-        set.push(`password = "${roleId}"`) 
+        set.push(`password = "${roleId}"`)
     }
-    
+
     const query = `update users set ${set.join()} where id_user = ${id}`
     con.query(query, (err, results, fields) => {
         if (err) {
@@ -58,4 +64,4 @@ async function editUser(req, res) {
 }
 
 
-module.exports = { getUsers, addUser, deleteUser, editUser}
+module.exports = { getUsers, addUser, deleteUser, editUser }
