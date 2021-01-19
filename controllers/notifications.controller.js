@@ -22,5 +22,16 @@ async function addNotification(req, res) {
     })
 }
 
+async function deleteNotification(req, res) {
+    const { id } = req.params
+    const query = `delete from notifications where id_notification = ${id}`
+    con.query(query, (err, results, fields) => {
+        if (err) {
+            return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
+        }
+        res.send(messages.getSuccess("deleteNotification", results))
+    })
+}
 
-module.exports = { getNotification, addNotification}
+
+module.exports = { getNotification, addNotification, deleteNotification}
