@@ -2,6 +2,7 @@ const con = require("../connection")
 const jwt = require("jsonwebtoken")
 const config = require("../config")
 const messages = require("../messages")
+const bcrypt = require("bcryptjs")
 
 function generateToken(userId) {
     return jwt.sign({
