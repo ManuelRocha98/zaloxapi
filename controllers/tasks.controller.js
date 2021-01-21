@@ -1,9 +1,10 @@
 const con = require("../connection")
 const messages = require("../messages")
 const moment = require("moment")
+let last_task_id = ""
 
 async function getTasks(req, res) {
-    const query = "select * from tasks;"
+    const query = "SELECT tasks.*, users.username from task_users inner join tasks on tasks.id_task = task_users.task_id inner join users on users.id_user = task_users.user_id;"
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -13,15 +14,24 @@ async function getTasks(req, res) {
 }
 
 async function addTask(req, res) {
-    const { title, description, state, project_id } = req.body
-    const query = `insert into tasks (title, description, state, end_date, timestamps, project_id) values ("${title}", "${description}", "${state}", "${moment().format('YYYY-MM-DD')}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}", "${project_id}")`
+    const { title, description, state, project_id, manager_id } = req.body
+    const query = `insert into tasks (title, description, state, end_date, timestamps, project_id, manager_id) values ("${title}", "${description}", "${state}", "${moment().format('YYYY-MM-DD')}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}", "${project_id}", "${manager_id}")`
     console.log(query)
-    con.query(query, (err, results, fields) => {
-        if (err) {
-            return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
+    con.query(query, (err1, results1, fields) => {
+        if (err1) {
+            return res.status(messages.error().status).send(messages.error("error", err1.sqlMessage))
         }
-        res.send(messages.getSuccess("addTask", results))
+        last_task_id = results1.insertId;
+        //task_id = ID da task que acabou de ser criado
+        const query3 = `insert into task_users (task_id, user_id) values ("${last_task_id}", "${manager_id}")`
+        con.query(query3, (err2, results2, fields) => {
+            if (err2) {
+                return res.status(messages.error().status).send(messages.error("error", err2.sqlMessage))
+            }
+            res.send(messages.getSuccess("addTask", results1))
+        })
     })
+    
 }
 
 async function deleteTask(req, res) {

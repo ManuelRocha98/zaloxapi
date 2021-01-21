@@ -6,8 +6,9 @@ const bcrypt = require("bcryptjs")
 async function getUsers(req, res) {
     const query = "select id_user, username, role_id from users;"
     con.query(query, (err, results, fields) => {
+        console.log(err, results)
         if (err) {
-            return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
+            return res.status(messages.error().status).send(messages.error("error", err))
         }
         res.send(messages.getSuccess("getUsers", results))
     })

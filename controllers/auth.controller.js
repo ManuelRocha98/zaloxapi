@@ -2,7 +2,7 @@ const con = require("../connection")
 const jwt = require("jsonwebtoken")
 const config = require("../config")
 const messages = require("../messages")
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcrypt")
 
 function generateToken(userId) {
     return jwt.sign({
@@ -28,20 +28,20 @@ async function signIn(req, res) {
             return res.status(messages.error().status).send(messages.error("error", "User not Found"))
         }
         const user = results[0];
-        const compare = async (pass) => {
-            if (!await bcrypt.compare(pass, user.password)) {
-                return res.status(messages.error().status).send(messages.error("error", "Invalid Password"))
+        //const compare = async (password) => {
+        bcrypt.compare(password, user.password).then(
+            function (result) {
+                if (result) {
+                    return res.send(messages.getSuccess("signIn", {
+                        jwt: generateToken(user.id_user),
+                        user
+                    }))
+                } else {
+                    return res.status(messages.error().status).send(messages.error("error", "Invalid Password"))
+                }
             }
-        }
-        compare(password);
-        user.id = user.id_user;
-        delete user.id_user;
-        delete user.password;
-        res.send(messages.getSuccess("signIn", {
-            jwt: generateToken(user.id),
-            user
-        }))
-    }) 
+        )
+    })
 }
 
 
