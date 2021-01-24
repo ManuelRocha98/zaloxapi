@@ -22,6 +22,13 @@ io.on('connection', (socket) => {
         let message = controller.respond(data)
         io.broadcast.to(`${message.roomName}`).emit('updateChat', message)
     });
+    
+    socket.on('join', (data) => {
+
+        console.log(userNickname +" : has joined the chat "  )
+
+        socket.broadcast.emit('userjoinedthechat',userNickname +" : has joined the chat ")
+    });
 
     socket.on('disconnect', (data) => {
         socket.broadcast.emit("userdisconnect", ' user left')
