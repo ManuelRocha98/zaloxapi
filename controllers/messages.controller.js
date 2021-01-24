@@ -22,6 +22,20 @@ async function addMessage(req, res) {
     })
 }
 
+function respond(data) {
+    const messageContent = data.content
+    const roomName = data.task_id
+    const user = data.user_id
+    console.log(`[Room Number ${roomName}] ${user} : ${messageContent}`)
+    let message = {
+        "message": messageContent,
+        "userName": user,
+        "roomName": roomName,
+    }
+    return message
+}
+
+
 async function deleteMessage(req, res) {
     const { id } = req.params
     const query = `delete from messages where id_message = ${id}`
@@ -60,4 +74,4 @@ async function editMessage(req, res) {
 }
 
 
-module.exports = { getMessages, addMessage, deleteMessage, editMessage }
+module.exports = { getMessages, addMessage, deleteMessage, editMessage, respond }
