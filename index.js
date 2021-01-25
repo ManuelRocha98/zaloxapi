@@ -15,12 +15,19 @@ app.use(cors({ credentials: true, origin: true }))
 io.on('connection', (socket) => {    
     socket.on('join', (data) => {
         let message = controller.respond(data)
-        io.to(${message.roomName}).emit('userjoin', message.user);
+        io.to(`${message.roomName}`).emit('userjoin', message.user);
     });
 
     socket.on('new message', (data) => {
         let message = controller.respond(data)
-        io.broadcast.to(${message.roomName}).emit('updateChat', message)
+        io.broadcast.to(`${message.roomName}`).emit('updateChat', message)
+    });
+    
+    socket.on('join', (data) => {
+
+        console.log(userNickname +" : has joined the chat "  )
+
+        socket.broadcast.emit('userjoinedthechat',userNickname +" : has joined the chat ")
     });
 
     socket.on('disconnect', (data) => {
