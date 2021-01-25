@@ -34,10 +34,6 @@ io.on('connection', (socket) => {
 
 require("./routes/index")(app)
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
-
 http.listen(3000, () => {
     console.log('Node app is running on port 3000')
 });
