@@ -12,22 +12,19 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors({ credentials: true, origin: true }))
 
-io.on('connection', (socket) => {    
-    socket.on('join', (data) => {
+io.on('connection', (socket) => {
+    socket.on('new member', (data) => {
+        console.log(data)
+        io.emit("new member", data);
         let message = controller.respond(data)
         io.to(`${message.roomName}`).emit('userjoin', message.user);
     });
 
-    socket.on('new message', (data) => {
+    socket.on('chat message', (data) => {
+        console.log(data)
+        io.emit("chat message", data);
         let message = controller.respond(data)
-        io.broadcast.to(`${message.roomName}`).emit('updateChat', message)
-    });
-    
-    socket.on('join', (data) => {
-
-        console.log(userNickname +" : has joined the chat "  )
-
-        socket.broadcast.emit('userjoinedthechat',userNickname +" : has joined the chat ")
+        io.to(`${message.roomName}`).emit('updateChat', message)
     });
 
     socket.on('disconnect', (data) => {
@@ -35,9 +32,8 @@ io.on('connection', (socket) => {
     });
 });
 
+require("./routes/index")(app)
+
 http.listen(3000, () => {
     console.log('Node app is running on port 3000')
 });
-
-require("./routes/index")(app)
-app.listen(port, () => console.log("listening on Port " + port))
