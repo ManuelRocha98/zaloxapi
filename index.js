@@ -13,23 +13,44 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors({ credentials: true, origin: true }))
 
 io.on('connection', (socket) => {
-    socket.on('new member', (data) => {
-        console.log(data)
-        io.emit("new member", data);
-        let message = controller.respond(data)
-        io.to(`${message.roomName}`).emit('userjoin', message.user);
+
+    console.log('user connected')
+
+    socket.on('join', function(userNickname) {
+
+        console.log(userNickname + " : has joined the chat ");
+
+        socket.broadcast.emit('userjoinedthechat', userNickname + " : has joined the chat ");
+
+        /* let message = controller.respond(data)
+        io.to(`${message.roomName}`).emit('new member', message.user); */
     });
 
-    socket.on('chat message', (data) => {
-        console.log(data)
-        io.emit("chat message", data);
-        let message = controller.respond(data)
-        io.to(`${message.roomName}`).emit('updateChat', message)
+
+    socket.on('messagedetection', (senderNickname, messageContent, roomName) => {
+
+        console.log(senderNickname + " :" + messageContent)
+
+        //create a message object 
+        let message = { "message": messageContent, "senderNickname": senderNickname, "roomName": roomName }
+
+        // send the message to the client side  
+        io.emit('message', message);
+
+        let data = { senderNickname, messageContent, roomName }
+        let message2 = controller.respond(data)
+        io.to(`${message2.roomName}`).emit('updateChat', message2)
+
     });
 
-    socket.on('disconnect', (data) => {
-        socket.broadcast.emit("userdisconnect", ' user left')
+
+    socket.on('disconnect', function() {
+        console.log(' user has left ')
+        socket.broadcast.emit("userdisconnect", " user has left ")
     });
+
+
+
 });
 
 require("./routes/index")(app)
