@@ -55,6 +55,8 @@ io.on('connection', (socket) => {
 
 require("./routes/index")(app)
 
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+
 http.listen(process.env.PORT || 3000, () => {
     console.log('Node app is running on port 3000')
 });
