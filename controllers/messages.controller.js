@@ -3,7 +3,7 @@ const messages = require("../messages")
 const moment = require("moment")
 
 async function getMessages(req, res) {
-    const query = "select id_message, content, user_id, task_id, timestamps from messages;"
+    const query = "select id_message, content, user_id, task_id, username, timestamps from messages;"
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
@@ -13,8 +13,8 @@ async function getMessages(req, res) {
 }
 
 async function addMessage(req, res) {
-    const { content, user_id, task_id } = req.body
-    const query = `insert into messages (content, user_id, task_id, timestamps) values ("${content}", "${user_id}", "${task_id}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}")`
+    const { content, user_id, task_id, username } = req.body
+    const query = `insert into messages (content, user_id, task_id, username, timestamps) values ("${content}", "${user_id}", "${task_id}", "${username}", "${moment().format(' YYYY-MM-DD, HH:mm:ss')}")`
     con.query(query, (err, results, fields) => {
         if (err) {
             return res.status(messages.error().status).send(messages.error("error", err.sqlMessage))
