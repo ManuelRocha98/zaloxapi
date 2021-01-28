@@ -8,4 +8,4 @@ router.post("/", auth, controller.addProjectUser)
 router.delete("/:id", auth, controller.deleteProjectUser)
 router.put("/:id", auth, controller.editProjectUser)
 
-module.exports = app => app.use("/projectsUsers", router)
+module.exports = app => app.use("/projectUsers", router)

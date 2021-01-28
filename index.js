@@ -6,6 +6,12 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const controller = require('./controllers/messages.controller')
 
+// Swagger
+const swaggerUi = require("swagger-ui-express"); 
+const swaggerDocument = require("./swagger.json")
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {explorer: true})); 
+
 const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
@@ -26,6 +32,11 @@ io.on('connection', (socket) => {
         io.to(`${message.roomName}`).emit('new member', message.user); */
     });
 
+    socket.on('task_id', function(task_id) {
+        console.log("task_id" + ": " + task_id)
+        socket.join(task_id);
+    });
+
 
     socket.on('messagedetection', (senderNickname, messageContent, roomName) => {
 
@@ -35,8 +46,8 @@ io.on('connection', (socket) => {
         let message = { "message": messageContent, "senderNickname": senderNickname, "roomName": roomName }
 
         // send the message to the client side  
-        io.emit('message', message);
-
+        /* io.emit('message', message); */
+        io.sockets.in(roomName).emit('message', message);
         let data = { senderNickname, messageContent, roomName }
         let message2 = controller.respond(data)
         io.to(`${message2.roomName}`).emit('updateChat', message2)
@@ -52,6 +63,7 @@ io.on('connection', (socket) => {
 
 
 });
+
 
 require("./routes/index")(app)
 
