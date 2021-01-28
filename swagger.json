@@ -664,7 +664,7 @@
                                     "$ref": "#components/schemas/Roles"
                                 },
                                 "examples": {
-                                    "Role": {
+                                    "Roles": {
                                         "value": {
                                             "id_role": 2,
                                             "name": "admin"
@@ -933,13 +933,13 @@
                                     "$ref": "#components/schemas/Projects"
                                 },
                                 "examples": {
-                                    "Role": {
+                                    "Projects": {
                                         "value": {
                                             "id_project": 3,
                                             "title": "Esmad",
                                             "description": "Website para a Esmad",
                                             "timestamps": "28/01/2021",
-                                            "manager_id": 1
+                                            "manager_id": 10
                                         }
                                     }
                                 }
@@ -1202,7 +1202,7 @@
                                     "$ref": "#components/schemas/ProjectUsers"
                                 },
                                 "examples": {
-                                    "Role": {
+                                    "ProjectUsers": {
                                         "value": {
                                             "project_id": 3,
                                             "user_id": 2
@@ -1473,7 +1473,7 @@
                                     "$ref": "#components/schemas/Tasks"
                                 },
                                 "examples": {
-                                    "Role": {
+                                    "Tasks": {
                                         "value": {
                                             "id_task": 2,
                                             "title": "Navbar",
@@ -1744,7 +1744,7 @@
                                     "$ref": "#components/schemas/TaskUsers"
                                 },
                                 "examples": {
-                                    "Task User": {
+                                    "TaskUsers": {
                                         "value": {
                                             "task_id": 2,
                                             "user_id": 2
@@ -2282,7 +2282,7 @@
                                     "$ref": "#components/schemas/MessageResources"
                                 },
                                 "examples": {
-                                    "Message Resources": {
+                                    "MessageResources": {
                                         "value": {
                                             "resource_id": 1,
                                             "message_id": 2
@@ -2818,7 +2818,7 @@
                                     "$ref": "#components/schemas/ResourceUsers"
                                 },
                                 "examples": {
-                                    "Resource Users": {
+                                    "ResourceUsers": {
                                         "value": {
                                             "resource_id": 1,
                                             "user_id": 2
@@ -3084,7 +3084,7 @@
                                     "$ref": "#components/schemas/Notifications"
                                 },
                                 "examples": {
-                                    "Resources": {
+                                    "Notifications": {
                                         "value": {
                                             "id_notification": 2,
                                             "content": "Seja bem vindo à Zalox E-ticket"
