@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "Teste de API",
-        "description": "Descrição de teste",
+        "title": "Zalox E-ticket",
+        "description": "A aplicação tem como principal objetivo passar pedidos entre a Zalox (empresa que forneceu o tema do projeto) e os seus respetivos clientes, mais especificamente tarefas a serem realizadas nos projetos destes. Estes também têm a possibilidade de comunicar com os funcionários da Zalox através de um chat integrado na aplicação",
         "version": "1.0"
     },
     "produces": [
